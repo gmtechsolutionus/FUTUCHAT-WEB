@@ -499,7 +499,7 @@ body::before {
 
 .gate-about-title {
   margin: 0 0 12px 0;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
   color: var(--neon);
   letter-spacing: 0.3px;
@@ -514,34 +514,34 @@ body::before {
 
 /* Gate Section Title */
 .gate-section-title {
-  margin: 0 0 16px 0;
+  margin: 0 0 12px 0;
   font-size: 16px;
   font-weight: 600;
   color: var(--neon);
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  font-family: 'Orbitron', sans-serif;
+  letter-spacing: 0.3px;
+  text-transform: none;
 }
 
 /* Pricing Section */
 .gate-pricing {
-  margin: 24px 0;
+  margin: 20px 0;
   padding: 20px;
-  background: rgba(15,18,40,0.6);
-  border: 1px solid rgba(124,254,255,0.15);
+  background: linear-gradient(135deg, rgba(124,254,255,0.08), rgba(179,136,255,0.08));
+  border: 1px solid rgba(124,254,255,0.2);
   border-radius: 14px;
+  backdrop-filter: blur(10px);
 }
 
 .pricing-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 16px;
-  margin-top: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
 }
 
 .pricing-card {
   position: relative;
-  padding: 20px 16px;
+  padding: 16px 12px;
   background: linear-gradient(135deg, rgba(50,80,180,0.15), rgba(91,140,255,0.08));
   border: 1px solid rgba(120,160,255,0.3);
   border-radius: 12px;
@@ -574,57 +574,59 @@ body::before {
 
 .pricing-badge {
   position: absolute;
-  top: -10px;
+  top: -8px;
   left: 50%;
   transform: translateX(-50%);
-  padding: 4px 12px;
+  padding: 3px 10px;
   background: linear-gradient(135deg, var(--neon), var(--neon-2));
   color: var(--bg-0);
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
-  border-radius: 12px;
+  border-radius: 10px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   box-shadow: 0 4px 15px rgba(124,254,255,0.4);
 }
 
 .pricing-duration {
-  font-size: 14px;
+  font-size: 13px;
   color: var(--muted);
   font-weight: 500;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
 .pricing-amount {
-  font-size: 32px;
+  font-size: 28px;
   font-weight: 700;
   color: var(--neon);
   font-family: 'Orbitron', sans-serif;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   text-shadow: 0 0 20px rgba(124,254,255,0.5);
 }
 
 .pricing-desc {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--muted);
   line-height: 1.4;
 }
 
 /* Gate Activation Section */
 .gate-activation {
-  margin: 24px 0;
+  margin: 20px 0;
   padding: 20px;
-  background: rgba(15,18,40,0.4);
-  border: 1px solid rgba(124,254,255,0.15);
+  background: linear-gradient(135deg, rgba(124,254,255,0.08), rgba(179,136,255,0.08));
+  border: 1px solid rgba(124,254,255,0.2);
   border-radius: 14px;
+  backdrop-filter: blur(10px);
 }
 
 .gate-sub { 
-  color: var(--muted); 
-  margin: 0 0 14px 0; 
+  color: var(--text); 
+  margin: 0 0 12px 0; 
   font-size: 14px;
+  line-height: 1.6;
 }
 
 .gate-input-row { 
