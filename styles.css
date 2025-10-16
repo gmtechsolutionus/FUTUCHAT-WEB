@@ -32,6 +32,10 @@ body {
   background-attachment: fixed;
   position: relative;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
 }
 
 body::before {
@@ -201,6 +205,8 @@ body::before {
   background: linear-gradient(180deg, rgba(15,18,40,0.7), rgba(15,18,40,0.4));
   backdrop-filter: blur(12px);
   overflow: auto;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
   box-shadow: 
     inset 0 1px 0 rgba(124, 254, 255, 0.05),
     inset 0 0 40px rgba(0,0,0,0.3),
@@ -291,6 +297,8 @@ body::before {
   border: 1px solid var(--border);
   background: rgba(6, 10, 25, 0.8);
   overflow: auto;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   font-size: 13px;
   line-height: 1.6;
@@ -344,6 +352,8 @@ body::before {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   font-size: 15px;
   line-height: 1.5;
+  font-family: inherit;
+  -webkit-appearance: none;
 }
 
 .input:focus {
@@ -419,8 +429,8 @@ body::before {
 
 .gate-card {
   width: 100%;
-  max-width: 520px;
-  padding: 28px 24px;
+  max-width: 640px;
+  padding: 32px 28px;
   border-radius: 20px;
   border: 1px solid rgba(124, 254, 255, 0.3);
   background: linear-gradient(135deg, rgba(15,18,40,0.95), rgba(7,8,21,0.95));
@@ -430,6 +440,8 @@ body::before {
     inset 0 1px 0 rgba(124, 254, 255, 0.2);
   backdrop-filter: blur(20px);
   animation: card-float 3s ease-in-out infinite;
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
 @keyframes card-float {
@@ -485,8 +497,154 @@ body::before {
   }
 }
 
-.gate-sub { color: var(--muted); margin: 8px 0 14px; }
-.gate-input-row { display: grid; grid-template-columns: 1fr auto; gap: 10px; }
+/* Gate About Section */
+.gate-about {
+  margin: 20px 0;
+  padding: 20px;
+  background: linear-gradient(135deg, rgba(124,254,255,0.08), rgba(179,136,255,0.08));
+  border: 1px solid rgba(124,254,255,0.2);
+  border-radius: 14px;
+  backdrop-filter: blur(10px);
+}
+
+.gate-about-title {
+  margin: 0 0 12px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--neon);
+  letter-spacing: 0.3px;
+}
+
+.gate-about-desc {
+  margin: 0;
+  color: var(--text);
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+/* Gate Section Title */
+.gate-section-title {
+  margin: 0 0 12px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--neon);
+  letter-spacing: 0.3px;
+  text-transform: none;
+}
+
+/* Pricing Section */
+.gate-pricing {
+  margin: 20px 0;
+  padding: 20px;
+  background: linear-gradient(135deg, rgba(124,254,255,0.08), rgba(179,136,255,0.08));
+  border: 1px solid rgba(124,254,255,0.2);
+  border-radius: 14px;
+  backdrop-filter: blur(10px);
+}
+
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.pricing-card {
+  position: relative;
+  padding: 16px 12px;
+  background: linear-gradient(135deg, rgba(50,80,180,0.15), rgba(91,140,255,0.08));
+  border: 1px solid rgba(120,160,255,0.3);
+  border-radius: 12px;
+  text-align: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.pricing-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 
+    0 8px 25px rgba(91,140,255,0.3),
+    0 0 30px rgba(124,254,255,0.2);
+  border-color: rgba(124,254,255,0.5);
+}
+
+.pricing-popular {
+  background: linear-gradient(135deg, rgba(124,254,255,0.2), rgba(179,136,255,0.15));
+  border: 2px solid rgba(124,254,255,0.5);
+  box-shadow: 
+    0 4px 20px rgba(124,254,255,0.2),
+    var(--glow);
+}
+
+.pricing-popular:hover {
+  box-shadow: 
+    0 8px 30px rgba(124,254,255,0.4),
+    var(--glow-strong);
+}
+
+.pricing-badge {
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 3px 10px;
+  background: linear-gradient(135deg, var(--neon), var(--neon-2));
+  color: var(--bg-0);
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 15px rgba(124,254,255,0.4);
+}
+
+.pricing-duration {
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 500;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.pricing-amount {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--neon);
+  font-family: 'Orbitron', sans-serif;
+  margin-bottom: 6px;
+  text-shadow: 0 0 20px rgba(124,254,255,0.5);
+}
+
+.pricing-desc {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+/* Gate Activation Section */
+.gate-activation {
+  margin: 20px 0;
+  padding: 20px;
+  background: linear-gradient(135deg, rgba(124,254,255,0.08), rgba(179,136,255,0.08));
+  border: 1px solid rgba(124,254,255,0.2);
+  border-radius: 14px;
+  backdrop-filter: blur(10px);
+}
+
+.gate-sub { 
+  color: var(--text); 
+  margin: 0 0 12px 0; 
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.gate-input-row { 
+  display: grid; 
+  grid-template-columns: 1fr auto; 
+  gap: 10px; 
+}
+
 .gate-input {
   padding: 12px 14px;
   border-radius: 12px;
@@ -503,6 +661,7 @@ body::before {
   box-shadow: var(--glow);
   background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
 }
+
 .gate-btn {
   padding: 12px 18px;
   border-radius: 12px;
@@ -543,8 +702,99 @@ body::before {
 .gate-btn:active {
   transform: translateY(0);
 }
-.gate-error { color: var(--danger); min-height: 20px; margin-top: 10px; font-size: 13px; }
-.gate-foot { color: var(--muted); font-size: 12px; margin-top: 10px; }
+
+.gate-error { 
+  color: var(--danger); 
+  min-height: 20px; 
+  margin-top: 10px; 
+  font-size: 13px; 
+}
+
+.gate-foot { 
+  color: var(--muted); 
+  font-size: 12px; 
+  margin-top: 10px; 
+}
+
+/* Support Section */
+.gate-support {
+  margin: 24px 0 0 0;
+  padding: 20px;
+  background: linear-gradient(135deg, rgba(179,136,255,0.1), rgba(124,254,255,0.08));
+  border: 1px solid rgba(179,136,255,0.3);
+  border-radius: 14px;
+  text-align: center;
+}
+
+.support-label {
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+
+.telegram-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #2AABEE, #229ED9);
+  color: white;
+  text-decoration: none;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(255,255,255,0.2);
+  box-shadow: 
+    0 4px 15px rgba(42,171,238,0.3),
+    0 0 20px rgba(42,171,238,0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.telegram-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: radial-gradient(circle, rgba(255,255,255,0.3), transparent);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.5s ease, height 0.5s ease;
+}
+
+.telegram-btn:hover::before {
+  width: 300%;
+  height: 300%;
+}
+
+.telegram-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 6px 25px rgba(42,171,238,0.5),
+    0 0 40px rgba(42,171,238,0.4);
+  border-color: rgba(255,255,255,0.4);
+}
+
+.telegram-btn:active {
+  transform: translateY(0);
+}
+
+.telegram-icon {
+  display: block;
+  filter: drop-shadow(0 0 4px rgba(255,255,255,0.3));
+}
+
+.support-username {
+  margin: 12px 0 0 0;
+  font-size: 13px;
+  color: var(--neon-2);
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
 
 .hidden { display: none !important; }
 
@@ -553,7 +803,210 @@ body::before {
 .messages::-webkit-scrollbar-track { background: transparent; }
 .messages::-webkit-scrollbar-thumb { background: linear-gradient(180deg, rgba(124,254,255,0.3), rgba(179,136,255,0.3)); border-radius: 10px; }
 
+/* Gate card scrollbar */
+.gate-card::-webkit-scrollbar { width: 8px; }
+.gate-card::-webkit-scrollbar-track { background: transparent; }
+.gate-card::-webkit-scrollbar-thumb { 
+  background: linear-gradient(180deg, rgba(124,254,255,0.4), rgba(179,136,255,0.4)); 
+  border-radius: 10px; 
+}
+
 @media (max-width: 640px) {
-  .message { max-width: 88%; }
-  .app { padding: 20px 12px 16px; }
+  /* App Layout */
+  .app { 
+    padding: 16px 10px 12px; 
+  }
+  
+  /* Header */
+  .app-header {
+    padding: 10px 12px;
+    margin-bottom: 12px;
+    border-radius: 12px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .app-title h1 {
+    font-size: 20px;
+  }
+  
+  .title-logo {
+    padding: 3px;
+  }
+  
+  .title-logo img {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .header-actions {
+    gap: 8px;
+  }
+  
+  .clear-btn {
+    padding: 5px 10px;
+    font-size: 0.8rem;
+  }
+  
+  .status-pill {
+    padding: 5px 10px;
+    font-size: 11px;
+  }
+  
+  /* Chat Container */
+  .chat {
+    min-height: calc(100vh - 120px);
+    gap: 10px;
+  }
+  
+  /* Messages */
+  .messages {
+    padding: 12px 8px;
+    border-radius: 12px;
+    gap: 10px;
+  }
+  
+  .message { 
+    max-width: 90%; 
+    padding: 10px 12px;
+    font-size: 14px;
+    border-radius: 12px;
+  }
+  
+  .message.bot pre {
+    margin: 8px 0;
+    padding: 10px 12px;
+    font-size: 12px;
+    border-radius: 8px;
+  }
+  
+  .message.bot pre .copy-btn {
+    padding: 4px 8px;
+    font-size: 11px;
+    top: 6px;
+    right: 6px;
+  }
+  
+  .message.bot code {
+    padding: 2px 4px;
+    font-size: 12px;
+  }
+  
+  /* Composer */
+  .composer {
+    grid-template-columns: 1fr auto;
+    gap: 8px;
+  }
+  
+  .input {
+    padding: 10px 12px;
+    font-size: 14px;
+    border-radius: 12px;
+    min-height: 44px;
+  }
+  
+  .send {
+    padding: 10px 16px;
+    font-size: 13px;
+    border-radius: 12px;
+    min-height: 44px;
+    white-space: nowrap;
+  }
+  
+  /* Gate Card */
+  .gate-card {
+    max-width: 95%;
+    padding: 20px 16px;
+  }
+  
+  .brand-name {
+    font-size: 16px;
+  }
+  
+  .brand-logo img {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .pricing-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .gate-about,
+  .gate-pricing,
+  .gate-activation,
+  .gate-support {
+    padding: 16px;
+  }
+  
+  .gate-about-title,
+  .gate-section-title {
+    font-size: 15px;
+  }
+  
+  .gate-about-desc {
+    font-size: 13px;
+  }
+  
+  .pricing-amount {
+    font-size: 24px;
+  }
+  
+  .telegram-btn {
+    padding: 10px 18px;
+    font-size: 13px;
+  }
+  
+  .gate-input-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .gate-btn {
+    width: 100%;
+  }
+  
+  .gate-input {
+    font-size: 14px;
+    padding: 10px 12px;
+  }
+}
+
+/* Extra small devices optimization */
+@media (max-width: 380px) {
+  .app {
+    padding: 12px 8px 10px;
+  }
+  
+  .app-header {
+    padding: 8px 10px;
+  }
+  
+  .app-title h1 {
+    font-size: 18px;
+  }
+  
+  .messages {
+    padding: 10px 6px;
+  }
+  
+  .message {
+    max-width: 92%;
+    padding: 8px 10px;
+    font-size: 13px;
+  }
+  
+  .composer {
+    gap: 6px;
+  }
+  
+  .input {
+    padding: 8px 10px;
+    font-size: 13px;
+  }
+  
+  .send {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
 }
