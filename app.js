@@ -415,10 +415,9 @@ async function checkPaymentSuccess() {
 function initTelegramLogin() {
   const container = $('telegramLoginContainer');
   
-  // Note: Replace 'YOUR_BOT_USERNAME' with your actual Telegram bot username
-  // Get this from @BotFather after creating your bot
-  // Example: 'futuchat_access_bot'
-  const BOT_USERNAME = 'YOUR_BOT_USERNAME'; // TODO: Update this!
+  // Telegram bot username (without @)
+  // Bot: @wormotic_bot
+  const BOT_USERNAME = 'wormotic_bot';
   
   // Create Telegram login button using widget
   const script = document.createElement('script');
