@@ -419,8 +419,8 @@ body::before {
 
 .gate-card {
   width: 100%;
-  max-width: 520px;
-  padding: 28px 24px;
+  max-width: 640px;
+  padding: 32px 28px;
   border-radius: 20px;
   border: 1px solid rgba(124, 254, 255, 0.3);
   background: linear-gradient(135deg, rgba(15,18,40,0.95), rgba(7,8,21,0.95));
@@ -430,6 +430,8 @@ body::before {
     inset 0 1px 0 rgba(124, 254, 255, 0.2);
   backdrop-filter: blur(20px);
   animation: card-float 3s ease-in-out infinite;
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
 @keyframes card-float {
@@ -485,8 +487,152 @@ body::before {
   }
 }
 
-.gate-sub { color: var(--muted); margin: 8px 0 14px; }
-.gate-input-row { display: grid; grid-template-columns: 1fr auto; gap: 10px; }
+/* Gate About Section */
+.gate-about {
+  margin: 20px 0;
+  padding: 20px;
+  background: linear-gradient(135deg, rgba(124,254,255,0.08), rgba(179,136,255,0.08));
+  border: 1px solid rgba(124,254,255,0.2);
+  border-radius: 14px;
+  backdrop-filter: blur(10px);
+}
+
+.gate-about-title {
+  margin: 0 0 12px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--neon);
+  letter-spacing: 0.3px;
+}
+
+.gate-about-desc {
+  margin: 0;
+  color: var(--text);
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+/* Gate Section Title */
+.gate-section-title {
+  margin: 0 0 16px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--neon);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  font-family: 'Orbitron', sans-serif;
+}
+
+/* Pricing Section */
+.gate-pricing {
+  margin: 24px 0;
+  padding: 20px;
+  background: rgba(15,18,40,0.6);
+  border: 1px solid rgba(124,254,255,0.15);
+  border-radius: 14px;
+}
+
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.pricing-card {
+  position: relative;
+  padding: 20px 16px;
+  background: linear-gradient(135deg, rgba(50,80,180,0.15), rgba(91,140,255,0.08));
+  border: 1px solid rgba(120,160,255,0.3);
+  border-radius: 12px;
+  text-align: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.pricing-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 
+    0 8px 25px rgba(91,140,255,0.3),
+    0 0 30px rgba(124,254,255,0.2);
+  border-color: rgba(124,254,255,0.5);
+}
+
+.pricing-popular {
+  background: linear-gradient(135deg, rgba(124,254,255,0.2), rgba(179,136,255,0.15));
+  border: 2px solid rgba(124,254,255,0.5);
+  box-shadow: 
+    0 4px 20px rgba(124,254,255,0.2),
+    var(--glow);
+}
+
+.pricing-popular:hover {
+  box-shadow: 
+    0 8px 30px rgba(124,254,255,0.4),
+    var(--glow-strong);
+}
+
+.pricing-badge {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 4px 12px;
+  background: linear-gradient(135deg, var(--neon), var(--neon-2));
+  color: var(--bg-0);
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 15px rgba(124,254,255,0.4);
+}
+
+.pricing-duration {
+  font-size: 14px;
+  color: var(--muted);
+  font-weight: 500;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.pricing-amount {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--neon);
+  font-family: 'Orbitron', sans-serif;
+  margin-bottom: 8px;
+  text-shadow: 0 0 20px rgba(124,254,255,0.5);
+}
+
+.pricing-desc {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+/* Gate Activation Section */
+.gate-activation {
+  margin: 24px 0;
+  padding: 20px;
+  background: rgba(15,18,40,0.4);
+  border: 1px solid rgba(124,254,255,0.15);
+  border-radius: 14px;
+}
+
+.gate-sub { 
+  color: var(--muted); 
+  margin: 0 0 14px 0; 
+  font-size: 14px;
+}
+
+.gate-input-row { 
+  display: grid; 
+  grid-template-columns: 1fr auto; 
+  gap: 10px; 
+}
+
 .gate-input {
   padding: 12px 14px;
   border-radius: 12px;
@@ -503,6 +649,7 @@ body::before {
   box-shadow: var(--glow);
   background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
 }
+
 .gate-btn {
   padding: 12px 18px;
   border-radius: 12px;
@@ -543,8 +690,99 @@ body::before {
 .gate-btn:active {
   transform: translateY(0);
 }
-.gate-error { color: var(--danger); min-height: 20px; margin-top: 10px; font-size: 13px; }
-.gate-foot { color: var(--muted); font-size: 12px; margin-top: 10px; }
+
+.gate-error { 
+  color: var(--danger); 
+  min-height: 20px; 
+  margin-top: 10px; 
+  font-size: 13px; 
+}
+
+.gate-foot { 
+  color: var(--muted); 
+  font-size: 12px; 
+  margin-top: 10px; 
+}
+
+/* Support Section */
+.gate-support {
+  margin: 24px 0 0 0;
+  padding: 20px;
+  background: linear-gradient(135deg, rgba(179,136,255,0.1), rgba(124,254,255,0.08));
+  border: 1px solid rgba(179,136,255,0.3);
+  border-radius: 14px;
+  text-align: center;
+}
+
+.support-label {
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+
+.telegram-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #2AABEE, #229ED9);
+  color: white;
+  text-decoration: none;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(255,255,255,0.2);
+  box-shadow: 
+    0 4px 15px rgba(42,171,238,0.3),
+    0 0 20px rgba(42,171,238,0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.telegram-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: radial-gradient(circle, rgba(255,255,255,0.3), transparent);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.5s ease, height 0.5s ease;
+}
+
+.telegram-btn:hover::before {
+  width: 300%;
+  height: 300%;
+}
+
+.telegram-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 6px 25px rgba(42,171,238,0.5),
+    0 0 40px rgba(42,171,238,0.4);
+  border-color: rgba(255,255,255,0.4);
+}
+
+.telegram-btn:active {
+  transform: translateY(0);
+}
+
+.telegram-icon {
+  display: block;
+  filter: drop-shadow(0 0 4px rgba(255,255,255,0.3));
+}
+
+.support-username {
+  margin: 12px 0 0 0;
+  font-size: 13px;
+  color: var(--neon-2);
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
 
 .hidden { display: none !important; }
 
@@ -553,7 +791,49 @@ body::before {
 .messages::-webkit-scrollbar-track { background: transparent; }
 .messages::-webkit-scrollbar-thumb { background: linear-gradient(180deg, rgba(124,254,255,0.3), rgba(179,136,255,0.3)); border-radius: 10px; }
 
+/* Gate card scrollbar */
+.gate-card::-webkit-scrollbar { width: 8px; }
+.gate-card::-webkit-scrollbar-track { background: transparent; }
+.gate-card::-webkit-scrollbar-thumb { 
+  background: linear-gradient(180deg, rgba(124,254,255,0.4), rgba(179,136,255,0.4)); 
+  border-radius: 10px; 
+}
+
 @media (max-width: 640px) {
   .message { max-width: 88%; }
   .app { padding: 20px 12px 16px; }
+  
+  .gate-card {
+    max-width: 95%;
+    padding: 24px 20px;
+  }
+  
+  .pricing-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .gate-about,
+  .gate-pricing,
+  .gate-activation,
+  .gate-support {
+    padding: 16px;
+  }
+  
+  .pricing-amount {
+    font-size: 28px;
+  }
+  
+  .telegram-btn {
+    padding: 10px 20px;
+    font-size: 13px;
+  }
+  
+  .gate-input-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .gate-btn {
+    width: 100%;
+  }
 }
