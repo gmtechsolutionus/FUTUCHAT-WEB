@@ -625,14 +625,14 @@ body::before {
 
 .buy-btn {
   width: 100%;
-  padding: 10px 16px;
-  margin-top: 8px;
-  border-radius: 10px;
-  border: 1px solid rgba(124,254,255,0.4);
-  background: linear-gradient(135deg, rgba(124,254,255,0.2), rgba(179,136,255,0.15));
+  padding: 12px 18px;
+  margin-top: 12px;
+  border-radius: 12px;
+  border: 1.5px solid rgba(124,254,255,0.5);
+  background: linear-gradient(135deg, rgba(124,254,255,0.25), rgba(179,136,255,0.18));
   color: var(--text);
   font-weight: 600;
-  font-size: 13px;
+  font-size: 14px;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
@@ -641,6 +641,7 @@ body::before {
   gap: 8px;
   position: relative;
   overflow: hidden;
+  box-shadow: 0 2px 8px rgba(124,254,255,0.15);
 }
 
 .buy-btn::before {
@@ -664,9 +665,11 @@ body::before {
 .buy-btn:hover {
   box-shadow: 
     var(--glow),
-    0 4px 15px rgba(124,254,255,0.3);
-  transform: translateY(-2px);
-  border-color: rgba(124,254,255,0.6);
+    0 4px 20px rgba(124,254,255,0.4),
+    0 0 30px rgba(124,254,255,0.2);
+  transform: translateY(-2px) scale(1.02);
+  border-color: rgba(124,254,255,0.8);
+  background: linear-gradient(135deg, rgba(124,254,255,0.35), rgba(179,136,255,0.25));
 }
 
 .buy-btn:active {
@@ -680,17 +683,39 @@ body::before {
 }
 
 .buy-btn-popular {
-  background: linear-gradient(135deg, rgba(124,254,255,0.3), rgba(179,136,255,0.2));
-  border: 2px solid rgba(124,254,255,0.6);
+  background: linear-gradient(135deg, rgba(124,254,255,0.35), rgba(179,136,255,0.25));
+  border: 2px solid rgba(124,254,255,0.7);
+  box-shadow: 
+    0 2px 12px rgba(124,254,255,0.25),
+    0 0 20px rgba(124,254,255,0.15);
 }
 
 .buy-btn-popular:hover {
-  box-shadow: var(--glow-strong);
+  box-shadow: 
+    var(--glow-strong),
+    0 6px 25px rgba(124,254,255,0.5),
+    0 0 40px rgba(124,254,255,0.3);
+  transform: translateY(-3px) scale(1.03);
 }
 
 .crypto-icon {
   display: block;
   filter: drop-shadow(0 0 4px rgba(124,254,255,0.5));
+}
+
+.crypto-icon.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateX(-50%) translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
 }
 
 .payment-note {
@@ -890,12 +915,15 @@ body::before {
 /* Payment Success Section */
 .payment-success {
   margin: 20px 0;
-  padding: 24px;
-  background: linear-gradient(135deg, rgba(24,226,153,0.15), rgba(124,254,255,0.1));
-  border: 2px solid rgba(24,226,153,0.4);
-  border-radius: 14px;
+  padding: 28px 24px;
+  background: linear-gradient(135deg, rgba(24,226,153,0.08), rgba(124,254,255,0.05));
+  border: 1.5px solid rgba(24,226,153,0.3);
+  border-radius: 16px;
   text-align: center;
   animation: success-appear 0.5s ease-out;
+  box-shadow: 
+    0 4px 20px rgba(24,226,153,0.15),
+    0 0 40px rgba(24,226,153,0.1);
 }
 
 @keyframes success-appear {
@@ -952,11 +980,40 @@ body::before {
 }
 
 .telegram-login-container {
-  margin: 16px 0;
+  margin: 20px 0;
+  padding: 20px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 60px;
+  min-height: 80px;
+  background: rgba(124,254,255,0.05);
+  border: 1px solid rgba(124,254,255,0.2);
+  border-radius: 12px;
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(124,254,255,0.1);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(124,254,255,0.2), 0 0 30px rgba(124,254,255,0.1);
+  }
+}
+
+.telegram-note {
+  margin-bottom: 10px;
+  animation: fade-in 0.5s ease-out;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .loading {

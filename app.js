@@ -258,9 +258,20 @@ function restoreMessages(messages, container) {
 // Payment handling
 async function handleBuyPlan(plan, amount, duration) {
   const buyButtons = document.querySelectorAll('.buy-btn');
+  const clickedButton = event.target.closest('.buy-btn');
+  
+  // Disable all buttons and show loading state
   buyButtons.forEach(btn => {
     btn.disabled = true;
-    btn.textContent = 'Processing...';
+    if (btn === clickedButton) {
+      btn.innerHTML = `
+        <svg class="crypto-icon spinner" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+          <circle cx="12" cy="12" r="10" stroke-opacity="0.3"/>
+          <path d="M12 2a10 10 0 0 1 10 10" stroke-linecap="round"/>
+        </svg>
+        Processing...
+      `;
+    }
   });
 
   try {
@@ -286,12 +297,48 @@ async function handleBuyPlan(plan, amount, duration) {
       timestamp: Date.now()
     }));
 
-    // Redirect to Coinbase payment page
-    window.location.href = data.hostedUrl;
+    // Show success message briefly before redirect
+    clickedButton.innerHTML = `
+      <svg class="crypto-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+        <path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Redirecting to Payment...
+    `;
+
+    // Redirect to Coinbase payment page after a brief delay
+    setTimeout(() => {
+      window.location.href = data.hostedUrl;
+    }, 500);
 
   } catch (error) {
     console.error('Payment error:', error);
-    alert(`Payment failed: ${error.message}`);
+    
+    // Show error message
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'payment-error';
+    errorDiv.textContent = `Payment failed: ${error.message}`;
+    errorDiv.style.cssText = `
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255, 59, 92, 0.95);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      z-index: 10000;
+      box-shadow: 0 4px 20px rgba(255, 59, 92, 0.4);
+      animation: slideDown 0.3s ease-out;
+    `;
+    document.body.appendChild(errorDiv);
+    
+    setTimeout(() => {
+      errorDiv.remove();
+    }, 4000);
+    
+    // Reset buttons
     buyButtons.forEach(btn => {
       btn.disabled = false;
       btn.innerHTML = '<svg class="crypto-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm1.5 16.5h-3v-3h3v3zm0-4.5h-3V6h3v6z"/></svg>Buy with Crypto';
@@ -382,16 +429,26 @@ window.onTelegramAuth = async function(user) {
 // Check for payment success redirect
 async function checkPaymentSuccess() {
   const urlParams = new URLSearchParams(window.location.search);
-  const isPaymentSuccess = window.location.pathname.includes('/payment-success') || urlParams.has('payment');
+  const paymentStatus = urlParams.get('payment');
   
-  if (!isPaymentSuccess) return;
+  if (paymentStatus !== 'success') return;
 
   const pendingCharge = localStorage.getItem('fc_pending_charge');
-  if (!pendingCharge) return;
+  if (!pendingCharge) {
+    console.log('No pending charge found');
+    return;
+  }
 
   const chargeData = JSON.parse(pendingCharge);
   
-  // Show payment success section
+  // Clear the payment parameter from URL without refresh
+  window.history.replaceState({}, document.title, window.location.pathname);
+  
+  // Hide pricing and activation sections, show payment success
+  const pricingSection = document.querySelector('.gate-pricing');
+  const aboutSection = document.querySelector('.gate-about');
+  if (pricingSection) pricingSection.style.display = 'none';
+  if (aboutSection) aboutSection.style.display = 'none';
   $('gateActivation').classList.add('hidden');
   $('paymentSuccess').classList.remove('hidden');
 
@@ -402,9 +459,13 @@ async function checkPaymentSuccess() {
 
     if (data.confirmed) {
       // Initialize Telegram Login Widget
+      console.log('Payment confirmed, initializing Telegram login');
       initTelegramLogin();
     } else {
+      console.log('Payment not yet confirmed');
       $('activationError').textContent = 'Payment is being processed. Please wait and refresh the page in a few minutes.';
+      // Poll for payment confirmation every 5 seconds
+      setTimeout(checkPaymentSuccess, 5000);
     }
   } catch (error) {
     console.error('Payment verification error:', error);
@@ -414,10 +475,13 @@ async function checkPaymentSuccess() {
 
 function initTelegramLogin() {
   const container = $('telegramLoginContainer');
+  container.innerHTML = ''; // Clear any existing content
   
   // Telegram bot username (without @)
   // Bot: @wormotic_bot
   const BOT_USERNAME = 'wormotic_bot';
+  
+  console.log('Initializing Telegram login with bot:', BOT_USERNAME);
   
   // Create Telegram login button using widget
   const script = document.createElement('script');
@@ -430,18 +494,11 @@ function initTelegramLogin() {
   
   container.appendChild(script);
   
-  // If bot username not configured, show error
-  if (BOT_USERNAME === 'YOUR_BOT_USERNAME') {
-    container.innerHTML = `
-      <div class="config-error">
-        <p style="color: var(--danger); margin: 10px 0;">⚠️ Telegram bot not configured</p>
-        <p style="color: var(--muted); font-size: 13px;">
-          Please update the bot username in app.js<br>
-          See PAYMENT_SETUP_GUIDE.md for instructions
-        </p>
-      </div>
-    `;
-  }
+  // Add a note above the button
+  const note = document.createElement('div');
+  note.className = 'telegram-note';
+  note.innerHTML = '<p style="color: var(--muted); font-size: 13px; margin-bottom: 15px; text-align: center;">Click the button below to complete activation</p>';
+  container.appendChild(note);
 }
 
 function wireGate() {
