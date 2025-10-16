@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="./styles.css" />
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js" crossorigin="anonymous"></script>
+    <script async src="https://telegram.org/js/telegram-widget.js?22"></script>
   </head>
   <body>
     <div id="gateOverlay" class="gate-overlay">
@@ -36,19 +37,48 @@
               <div class="pricing-duration">7 Days</div>
               <div class="pricing-amount">$30</div>
               <div class="pricing-desc">Perfect for short-term projects</div>
+              <button class="buy-btn" data-plan="7-day" data-amount="30" data-duration="7">
+                <svg class="crypto-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm1.5 16.5h-3v-3h3v3zm0-4.5h-3V6h3v6z"/>
+                </svg>
+                Buy with Crypto
+              </button>
             </div>
             <div class="pricing-card pricing-popular">
               <div class="pricing-badge">Most Popular</div>
               <div class="pricing-duration">30 Days</div>
               <div class="pricing-amount">$80</div>
               <div class="pricing-desc">Best value for extended access</div>
+              <button class="buy-btn buy-btn-popular" data-plan="30-day" data-amount="80" data-duration="30">
+                <svg class="crypto-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm1.5 16.5h-3v-3h3v3zm0-4.5h-3V6h3v6z"/>
+                </svg>
+                Buy with Crypto
+              </button>
             </div>
+          </div>
+          <div class="payment-note">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="16" x2="12" y2="12"/>
+              <line x1="12" y1="8" x2="12.01" y2="8"/>
+            </svg>
+            Secure crypto payments via Coinbase Commerce. After payment, login with Telegram to activate.
           </div>
         </div>
 
+        <!-- Payment Success Section (hidden by default) -->
+        <div id="paymentSuccess" class="payment-success hidden">
+          <div class="success-icon">✓</div>
+          <h3 class="success-title">Payment Received!</h3>
+          <p class="success-desc">Complete your activation by logging in with Telegram:</p>
+          <div id="telegramLoginContainer" class="telegram-login-container"></div>
+          <div id="activationError" class="gate-error"></div>
+        </div>
+
         <!-- Access Key Input -->
-        <div class="gate-activation">
-          <h3 class="gate-section-title">Activate Your Access</h3>
+        <div id="gateActivation" class="gate-activation">
+          <h3 class="gate-section-title">Already Have an Access Key?</h3>
           <p class="gate-sub">Enter your access key below to activate your subscription.</p>
           <div class="gate-input-row">
             <input id="accessKeyInput" class="gate-input" type="password" placeholder="Paste your access key" autocomplete="off" />
