@@ -32,8 +32,8 @@ export default async function handler(req, res) {
         duration: duration,
         product: 'futuchat-access'
       },
-      redirect_url: `${req.headers.origin || 'https://futuchat.vercel.app'}/payment-success`,
-      cancel_url: `${req.headers.origin || 'https://futuchat.vercel.app'}/`
+      redirect_url: `${req.headers.origin || 'https://futuchat.vercel.app'}/?payment=success`,
+      cancel_url: `${req.headers.origin || 'https://futuchat.vercel.app'}/?payment=cancelled`
     };
 
     const response = await fetch('https://api.commerce.coinbase.com/charges', {
