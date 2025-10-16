@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FutuChat</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js" crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <div id="gateOverlay" class="gate-overlay">
+      <div class="gate-card">
+        <div class="brand">
+          <span class="brand-symbol">◈</span>
+          <span class="brand-name">FutuChat Access</span>
+        </div>
+        <p class="gate-sub">Enter your access key to activate for 30 days.</p>
+        <div class="gate-input-row">
+          <input id="accessKeyInput" class="gate-input" type="password" placeholder="Paste access key" autocomplete="off" />
+          <button id="activateBtn" class="gate-btn" type="button">Activate</button>
+        </div>
+        <div id="gateError" class="gate-error" role="alert" aria-live="polite"></div>
+        <p class="gate-foot">Your device will remain activated for 30 days from first use.</p>
+      </div>
+    </div>
+
+    <div class="app">
+      <header class="app-header">
+        <div class="app-title">
+          <span class="title-symbol">◈</span>
+          <h1>FutuChat</h1>
+        </div>
+        <div class="header-actions">
+          <button id="clearBtn" class="clear-btn" type="button" title="Clear conversation">Clear</button>
+          <div class="status-pill" id="activationStatus">Locked</div>
+        </div>
+      </header>
+
+      <main class="chat">
+        <div id="messages" class="messages" aria-live="polite" aria-label="Chat messages"></div>
+        <form id="composer" class="composer" autocomplete="off">
+          <textarea id="messageInput" class="input" rows="1" placeholder="Send a message... (Enter to send, Shift+Enter for newline)"></textarea>
+          <button id="sendBtn" class="send" type="submit" disabled>Send</button>
+        </form>
+      </main>
+    </div>
+
+    <script defer src="./app.js"></script>
+  </body>
+</html>
