@@ -255,6 +255,195 @@ function restoreMessages(messages, container) {
   for (const m of messages) renderMessage(container, m);
 }
 
+// Payment handling
+async function handleBuyPlan(plan, amount, duration) {
+  const buyButtons = document.querySelectorAll('.buy-btn');
+  buyButtons.forEach(btn => {
+    btn.disabled = true;
+    btn.textContent = 'Processing...';
+  });
+
+  try {
+    const response = await fetch('/api/create-charge', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ plan, amount, duration })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || 'Failed to create payment');
+    }
+
+    // Store charge info for later verification
+    localStorage.setItem('fc_pending_charge', JSON.stringify({
+      code: data.code,
+      chargeId: data.chargeId,
+      plan,
+      amount,
+      duration,
+      timestamp: Date.now()
+    }));
+
+    // Redirect to Coinbase payment page
+    window.location.href = data.hostedUrl;
+
+  } catch (error) {
+    console.error('Payment error:', error);
+    alert(`Payment failed: ${error.message}`);
+    buyButtons.forEach(btn => {
+      btn.disabled = false;
+      btn.innerHTML = '<svg class="crypto-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm1.5 16.5h-3v-3h3v3zm0-4.5h-3V6h3v6z"/></svg>Buy with Crypto';
+    });
+  }
+}
+
+function wireBuyButtons() {
+  const buyButtons = document.querySelectorAll('.buy-btn');
+  buyButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const plan = btn.dataset.plan;
+      const amount = btn.dataset.amount;
+      const duration = btn.dataset.duration;
+      handleBuyPlan(plan, amount, duration);
+    });
+  });
+}
+
+// Telegram login callback
+window.onTelegramAuth = async function(user) {
+  const errorDiv = $('activationError');
+  errorDiv.textContent = '';
+
+  const pendingCharge = localStorage.getItem('fc_pending_charge');
+  if (!pendingCharge) {
+    errorDiv.textContent = 'No pending payment found.';
+    return;
+  }
+
+  const chargeData = JSON.parse(pendingCharge);
+
+  try {
+    // Show loading state
+    const container = $('telegramLoginContainer');
+    container.innerHTML = '<div class="loading">Activating your access...</div>';
+
+    // Verify payment and activate
+    const response = await fetch('/api/activate-telegram', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        telegramData: user,
+        chargeCode: chargeData.code
+      })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || 'Activation failed');
+    }
+
+    // Store access key hash and activate
+    const keyHash = await sha256Hex(data.accessKey);
+    ALLOWED_KEY_HASHES.add(keyHash);
+    
+    const record = {
+      activatedAt: Date.now(),
+      expiresAt: data.expiresAt,
+      keyHash: keyHash,
+      telegramUser: data.user
+    };
+    
+    saveActivation(record);
+    localStorage.removeItem('fc_pending_charge');
+    
+    // Show success and redirect
+    container.innerHTML = `
+      <div class="activation-complete">
+        <div class="success-icon-large">✓</div>
+        <h4>Activation Complete!</h4>
+        <p>Welcome, ${data.user.firstName}! Your access is now active.</p>
+        <p class="access-details">${data.duration} days • Expires: ${new Date(data.expiresAt).toLocaleDateString()}</p>
+      </div>
+    `;
+
+    setTimeout(() => {
+      updateActivationUI(record);
+    }, 2000);
+
+  } catch (error) {
+    console.error('Activation error:', error);
+    errorDiv.textContent = `Activation failed: ${error.message}`;
+  }
+};
+
+// Check for payment success redirect
+async function checkPaymentSuccess() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const isPaymentSuccess = window.location.pathname.includes('/payment-success') || urlParams.has('payment');
+  
+  if (!isPaymentSuccess) return;
+
+  const pendingCharge = localStorage.getItem('fc_pending_charge');
+  if (!pendingCharge) return;
+
+  const chargeData = JSON.parse(pendingCharge);
+  
+  // Show payment success section
+  $('gateActivation').classList.add('hidden');
+  $('paymentSuccess').classList.remove('hidden');
+
+  // Verify payment status
+  try {
+    const response = await fetch(`/api/verify-payment?chargeCode=${chargeData.code}`);
+    const data = await response.json();
+
+    if (data.confirmed) {
+      // Initialize Telegram Login Widget
+      initTelegramLogin();
+    } else {
+      $('activationError').textContent = 'Payment is being processed. Please wait and refresh the page in a few minutes.';
+    }
+  } catch (error) {
+    console.error('Payment verification error:', error);
+    $('activationError').textContent = 'Unable to verify payment. Please contact support.';
+  }
+}
+
+function initTelegramLogin() {
+  const container = $('telegramLoginContainer');
+  
+  // Telegram bot username (without @)
+  // Bot: @wormotic_bot
+  const BOT_USERNAME = 'wormotic_bot';
+  
+  // Create Telegram login button using widget
+  const script = document.createElement('script');
+  script.async = true;
+  script.src = 'https://telegram.org/js/telegram-widget.js?22';
+  script.setAttribute('data-telegram-login', BOT_USERNAME);
+  script.setAttribute('data-size', 'large');
+  script.setAttribute('data-onauth', 'onTelegramAuth(user)');
+  script.setAttribute('data-request-access', 'write');
+  
+  container.appendChild(script);
+  
+  // If bot username not configured, show error
+  if (BOT_USERNAME === 'YOUR_BOT_USERNAME') {
+    container.innerHTML = `
+      <div class="config-error">
+        <p style="color: var(--danger); margin: 10px 0;">⚠️ Telegram bot not configured</p>
+        <p style="color: var(--muted); font-size: 13px;">
+          Please update the bot username in app.js<br>
+          See PAYMENT_SETUP_GUIDE.md for instructions
+        </p>
+      </div>
+    `;
+  }
+}
+
 function wireGate() {
   $('activateBtn').addEventListener('click', handleActivate);
   $('accessKeyInput').addEventListener('keydown', (e) => {
@@ -277,9 +466,13 @@ function boot() {
   restoreMessages(messages, container);
   bindComposer(messages, container);
   wireGate();
+  wireBuyButtons();
 
   // Wire clear button
   $('clearBtn').addEventListener('click', () => clearConversation(messages, container));
+
+  // Check for payment success
+  checkPaymentSuccess();
 
   const activation = loadActivation();
   updateActivationUI(activation);

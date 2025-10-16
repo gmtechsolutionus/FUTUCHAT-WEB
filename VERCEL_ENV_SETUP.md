@@ -28,11 +28,25 @@ When adding environment variables in Vercel, make sure to check **ALL** environm
 
 ### Required Environment Variables:
 
+#### Core Application:
 ```
 XAI_API_KEY=your_api_key_here
 SYSTEM_PROMPT=Your custom system prompt here
-XAI_MODEL=grok-4-fast
 ```
+
+#### Payment System (Coinbase Commerce):
+```
+COINBASE_COMMERCE_API_KEY=your_coinbase_api_key_here
+COINBASE_WEBHOOK_SECRET=your_webhook_secret_here
+```
+
+#### Telegram Authentication:
+```
+TELEGRAM_BOT_TOKEN=1234567890:ABCdefGHIjklMNOpqrsTUVwxyz
+TELEGRAM_BOT_USERNAME=your_bot_username
+```
+
+**📖 For detailed setup instructions, see [PAYMENT_SETUP_GUIDE.md](./PAYMENT_SETUP_GUIDE.md)**
 
 ## 🔍 Verifying the System Prompt is Working
 
